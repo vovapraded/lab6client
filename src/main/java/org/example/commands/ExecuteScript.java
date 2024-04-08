@@ -1,6 +1,4 @@
 package org.example.commands;
-import lombok.NoArgsConstructor;
-import org.example.managers.*;
 import org.example.utility.*;
 
 import java.io.File;
@@ -52,9 +50,9 @@ public class ExecuteScript extends Command implements Serializable {
                     console.print("Ошибка бесконечная рекурсия");
                 }
             } catch (FileNotFoundException e) {
-                throw new InvalidFormatExeption("Нет такого файла");
+                throw new InvalidFormatException("Нет такого файла");
             }catch (SecurityException e){
-                throw new InvalidFormatExeption("Нет прав доступа");
+                throw new InvalidFormatException("Нет прав доступа");
         }
     }
 }

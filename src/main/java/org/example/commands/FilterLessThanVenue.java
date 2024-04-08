@@ -1,9 +1,6 @@
 package org.example.commands;
 
 
-import lombok.Getter;
-import lombok.Setter;
-import org.example.managers.*;
 import org.example.utility.*;
 import org.example.dto.*;
 
@@ -24,7 +21,7 @@ public class FilterLessThanVenue extends Command implements Serializable {
         var capacityStr = stringArg;
         //если у каких-то билетов capacity=null то они в любом случае выписываются
             if (!Validator.validate(capacityStr,TypesOfArgs.Long,true)){
-                throw new InvalidFormatExeption("Вместимость должна быть числом");
+                throw new InvalidFormatException("Вместимость должна быть числом");
             }
             Long capacity= Long.parseLong(capacityStr);
             ArrayList<Ticket> filtered = collection.filterLessThanVenue(capacity);

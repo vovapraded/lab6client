@@ -1,16 +1,9 @@
 package org.example.utility;
 
 import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.util.Date;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.Scanner;
 
+import org.example.commands.Exit;
 import org.example.connection.UdpClient;
-import  org.example.dto.*;
-import   org.example.utility.*;
-import org.example.commands.*;
 import org.example.managers.*;
 /**
  *Main class
@@ -30,11 +23,16 @@ public class Main {
                     String cmd = parseInput.getArg1();
                     String arg2 = parseInput.getArg2();
                     if (parseInput.getArg3Exist() == 1) {
-                        throw new InvalidFormatExeption("Слишком много аргументов");
+                        throw new InvalidFormatException("Слишком много аргументов");
                     }
                     var command = creator.createComand(cmd, arg2);
+                    if (cmd.equals("exit")){
+                        Exit exit = new Exit();
+                        exit.execute();
+                    }
                     udpClient.sendCommand(command);
-                } catch (InvalidFormatExeption e) {
+                    System.out.println(udpClient.getResponse().trim());
+                } catch (InvalidFormatException e) {
                     console.print(e.getMessage());
                 }
             }

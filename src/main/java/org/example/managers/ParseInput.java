@@ -27,7 +27,7 @@ public class ParseInput   {
         arg2IsNotEmpty=0;
         arg3Exist = 0;
         }
-    public  void parseInput(String s ) throws InvalidFormatExeption {
+    public  void parseInput(String s ) throws InvalidFormatException {
         resetTheValues();
         String[] parts = s.split(" ");
         try {

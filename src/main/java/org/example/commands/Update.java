@@ -1,9 +1,7 @@
 package org.example.commands;
 
 import org.example.dto.Ticket;
-import org.example.managers.*;
-import org.example.utility.*;
-import org.example.utility.InvalidFormatExeption;
+import org.example.utility.InvalidFormatException;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -25,7 +23,7 @@ public class Update extends Command implements Serializable {
             Insert ins = new Insert ();
             ins.setStringArg(stringArg);
             ins.execute();
-        }catch (InvalidFormatExeption e){
+        }catch (InvalidFormatException e){
             collection.insertElement(ticket);
             System.out.println(e.getMessage());
         }

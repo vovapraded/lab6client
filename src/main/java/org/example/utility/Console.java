@@ -1,9 +1,7 @@
 package org.example.utility;
 
-import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.example.commands.ExecuteScript;
-import org.example.commands.Insert;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -65,7 +63,7 @@ public class Console {
         return  getInput();
     }
     private void  goToMenu(){
-        throw new InvalidFormatExeption("Операция отменена");
+        throw new InvalidFormatException("Операция отменена");
     }
     public String getInputFromCommand(int minCountOfArgs,int maxCountOfArgs){
         this.print("Для отмены операции введите /");

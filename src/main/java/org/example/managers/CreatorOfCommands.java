@@ -36,7 +36,7 @@ public class CreatorOfCommands {
             int a = arg1.isEmpty() ? 0 : 1;
             try {
             if (a!= Commands.valueOf(cmd).getCountArgs()){
-                throw new InvalidFormatExeption("Неверное число аргументов");
+                throw new InvalidFormatException("Неверное число аргументов");
             }
             }catch (IllegalArgumentException e){
                 throw new RuntimeException("Нет такой команды");
@@ -46,7 +46,7 @@ public class CreatorOfCommands {
             return command;
         }
         else {
-            throw new InvalidFormatExeption("Нет такой команды");
+            throw new InvalidFormatException("Нет такой команды");
         }
     }
 

@@ -2,9 +2,7 @@ package org.example.managers;
 
 import org.example.dto.Ticket;
 import org.example.dto.Venue;
-import org.example.dto.VenueType;
 import org.example.utility.Console;
-import org.example.utility.InvalidFormatExeption;
 
 import java.util.*;
 
