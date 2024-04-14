@@ -19,7 +19,6 @@ public class PropertyUtil {
         return properties.getProperty("server.address");
     }
     public static int getPort(){
-        System.out.println(properties.getProperty("server.port"));
         return Integer.parseInt(properties.getProperty("server.port"));
     }
 

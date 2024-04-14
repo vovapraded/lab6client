@@ -49,6 +49,18 @@ public class Ticket extends ElementsWithId implements Comparable<Ticket>, Serial
         this.venue=venue;
     }
 
+    public Ticket(Long id, String name, Coordinates coordinates, Long price, Long discount, Boolean refundable, TicketType ticketType, Venue venue) {
+        this.name= name;
+        this.id = id;
+        this.coordinates=coordinates;
+        this.creationDate = new Date();
+        this.price=price;
+        this.discount = discount;
+        this.refundable = refundable;
+        this.type = ticketType;
+        this.venue=venue;
+    }
+
 
     public Boolean getRefundable() {
         return refundable;

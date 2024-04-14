@@ -1,6 +1,7 @@
 package org.example.connection;
-import lombok.SneakyThrows;
 import org.example.commands.Command;
+import org.example.utility.Console;
+import org.example.utility.NoResponseException;
 import org.example.utility.PropertyUtil;
 
 import java.io.ByteArrayOutputStream;
@@ -9,14 +10,16 @@ import java.io.ObjectOutputStream;
 import java.net.*;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import com.google.common.primitives.Bytes;
 
 
-public class UdpClient {
+public class UdpClient  {
     private final int PACKET_SIZE = 1024;
     private final int DATA_SIZE = PACKET_SIZE - 1;
-private final DatagramChannel client;
+    private final Console console = Console.getInstance();
+private DatagramChannel client;
     private final InetSocketAddress serverSocketAddress;
     private final InetAddress serverAddress;
 
@@ -27,17 +30,35 @@ private final DatagramChannel client;
         try {
             serverAddress = InetAddress.getByName(PropertyUtil.getAddress());
             serverSocketAddress = new InetSocketAddress(serverAddress, PropertyUtil.getPort());
-
         } catch (UnknownHostException e) {
             throw new RuntimeException(e);
         }
     }
 
-    @SneakyThrows
-    public UdpClient() {
-        this.client = DatagramChannel.open().bind(null).connect(serverSocketAddress);
-        this.client.configureBlocking(false);
+    public UdpClient()  {
+        console.print("Пытаемся открыть канал для соединения с сервером");
+        boolean channelIsOpen = false;
+        int i = 0;
+           while (!channelIsOpen && i<10) {
+               try {
+                       this.client = DatagramChannel.open().bind(null).connect(serverSocketAddress);
+                       this.client.configureBlocking(false);
+                       channelIsOpen=true;
+               } catch (IOException e) {
+                   i++;
+               }
+           }
+           if (channelIsOpen) {
+               console.print("Канал открыт");
+               console.printHello();
+
+           }else {
+               console.print("Не удалось открыть канал, проверьте настройки соединения и перезапустите программу");
+
+        }
     }
+
+
 
     public void sendCommand(Command command) {
         try {
@@ -53,42 +74,59 @@ private final DatagramChannel client;
         }
 
     }
-    private void sendData(byte[] data) throws IOException {
+    public void sendData(byte[] data) throws IOException {
         byte[][] packets=new byte[(int)Math.ceil(data.length / (double)DATA_SIZE)][PACKET_SIZE];
         for (int i = 0; i<packets.length;i++){
-            if (i == packets.length - 1) {
-                packets[i] = Bytes.concat(Arrays.copyOfRange(data,i*DATA_SIZE,(i+1)*DATA_SIZE), new byte[]{1});
-            } else {
-                packets[i] = Bytes.concat(Arrays.copyOfRange(data,i*DATA_SIZE,(i+1)*DATA_SIZE), new byte[]{0});
+            byte k = 0;
+            if (i == 0){
+                k+=1;
             }
+            if (i == packets.length - 1) {
+                k +=2;
+            }
+            packets[i] = Bytes.concat(Arrays.copyOfRange(data,i*DATA_SIZE,(i+1)*DATA_SIZE), new byte[]{k});
+
         }
         for (byte[] packet : packets) {
             client.send(ByteBuffer.wrap(packet),serverSocketAddress);
-        }
-    }
 
-    private byte[] receiveData(int bufferSize) throws IOException {
+        }
+   }
+
+    private byte[] receiveData(int bufferSize) throws IOException,NoResponseException {
         var buffer = ByteBuffer.allocate(bufferSize);
         SocketAddress address = null;
+        var start = LocalDateTime.now();
         while(address == null) {
-            address = client.receive(buffer);
+                if (LocalDateTime.now().isAfter(start.plusSeconds(5L))){
+                    throw new NoResponseException("Ответа нет более 5 секунд, повторите запрос");
+                }
+                address = client.receive(buffer);
         }
         return buffer.array();
     }
-    @SneakyThrows
-    private byte[] receiveData(){
+
+    private byte[] receiveData() throws NoResponseException{
         var received=false;
         var result=new byte[0];
         while (!received){
-           var data= receiveData(PACKET_SIZE);
-           if (data[data.length-1]==1){
+            byte[] data= new byte[0];
+            try {
+                data = receiveData(PACKET_SIZE);
+            } catch (IOException e) {
+                throw new NoResponseException("Не получилось получить ответ от сервера, проверьте настройки соединения и повторите запрос");
+            }
+            if(data.length==0){
+                throw new NoResponseException("Ответ пустой");
+            }
+            if (data[data.length-1]==1){
                received=true;
            }
            result = Bytes.concat(result, Arrays.copyOf(data, data.length - 1));
         }
         return result;
     }
-    public String getResponse(){
+    public String getResponse() throws PortUnreachableException, NoResponseException{
         return new String(receiveData());
     }
 

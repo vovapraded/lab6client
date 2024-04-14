@@ -1,8 +1,6 @@
 package org.example.commands;
 
-import org.example.managers.Collection;
 import org.example.managers.DumpManager;
-import org.example.utility.Console;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -17,16 +15,13 @@ public class Save extends Command implements Serializable {
 
     @Override
     public void execute() {
-            try {
-                DumpManager.saveToFile(collection);
-                console.print("Коллекция успешно сохранена");
-            }
-            catch (NullPointerException e){
-                console.print("Создайте файл для сохранения");
-            }
-
-
-
-
+//        try {
+//            DumpManager.saveToFile(collection);
+//            console.addToSend("Коллекция успешно сохранена");
+//        } catch (NullPointerException e) {
+//            console.addToSend("Создайте файл для сохранения");
+//        }
+//        console.send();
+//
     }
 }

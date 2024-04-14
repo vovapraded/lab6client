@@ -157,7 +157,7 @@ public class CreateTicket {
         }
         Venue venue = new Venue(venueType, venueCapacity, venueName);
         Coordinates coordinates = new Coordinates(x, y);
-        Ticket ticket = new Ticket(name, coordinates, price, discount, refundable, ticketType, venue);
+        Ticket ticket = new Ticket(id,name, coordinates, price, discount, refundable, ticketType, venue);
         ticket.setId(id);
         return ticket;
     }

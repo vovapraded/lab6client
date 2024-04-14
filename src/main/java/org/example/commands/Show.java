@@ -4,6 +4,7 @@ import org.example.dto.Ticket;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
@@ -20,8 +21,10 @@ public class Show extends Command implements Serializable {
                 console.print("Коллекция пуста");
             }
             else{
-                Arrays.sort(collection.getHashMap().values().toArray());
-                for (Ticket ticket : collection.getHashMap().values()){
+                ArrayList<Ticket> tempList = new ArrayList<>(collection.getHashMap().values());
+                tempList.sort(null);
+
+                for (Ticket ticket : tempList) {
                     console.print(ticket.toString());
                 }
             }

@@ -20,9 +20,10 @@ public class CreatorOfCommands {
         commands.put("update",new Update());
         commands.put("show",new Show());
         commands.put("exit",new Exit());
-        commands.put("save",new Save());
         commands.put("clear",new Clear());
         commands.put("info",new Info());
+        commands.put("save",new Save());
+
         commands.put("remove_greater",new RemoveGreater());
         commands.put("remove_greater_key", new RemoveGreaterKey());
         commands.put("print_descending", new PrintDescending());
@@ -31,7 +32,7 @@ public class CreatorOfCommands {
         commands.put("replace_if_greater",new ReplaceIfGreater());
         commands.put("filter_less_than_venue",new FilterLessThanVenue());
     }
-    public Command createComand(String cmd, String arg1) {
+    public Command createCommand(String cmd, String arg1) {
         if (commands.containsKey(cmd)){
             int a = arg1.isEmpty() ? 0 : 1;
             try {
@@ -43,6 +44,10 @@ public class CreatorOfCommands {
             }
             var command=commands.get(cmd);
             command.prepareToSend(arg1,Commands.valueOf(cmd).isTicketArgIsNeeded());
+            if (cmd.equals("execute_script") || cmd.equals("exit") ){
+                command.execute();
+                return null;
+            }
             return command;
         }
         else {

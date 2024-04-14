@@ -1,6 +1,7 @@
 package org.example.utility;
 
 import java.io.IOException;
+import java.net.PortUnreachableException;
 
 import org.example.commands.Exit;
 import org.example.connection.UdpClient;
@@ -10,6 +11,7 @@ import org.example.managers.*;
  */
 
 public class Main {
+
     public static void main(String[] args) throws IOException {
         UdpClient udpClient = new UdpClient();
         Console console = Console.getInstance();
@@ -25,13 +27,19 @@ public class Main {
                     if (parseInput.getArg3Exist() == 1) {
                         throw new InvalidFormatException("Слишком много аргументов");
                     }
-                    var command = creator.createComand(cmd, arg2);
-                    if (cmd.equals("exit")){
-                        Exit exit = new Exit();
-                        exit.execute();
+                   var command = creator.createCommand(cmd, arg2);
+                   if (command==null){
+                       continue;
+                   }
+                    try {
+                        udpClient.sendCommand(command);
+                        console.print(udpClient.getResponse().trim());
+                    }catch (PortUnreachableException e){
+                        console.print("Сервер недоступен, повторите позже");
+                    }catch (NoResponseException e){
+                        console.print(e.getMessage());
                     }
-                    udpClient.sendCommand(command);
-                    System.out.println(udpClient.getResponse().trim());
+
                 } catch (InvalidFormatException e) {
                     console.print(e.getMessage());
                 }

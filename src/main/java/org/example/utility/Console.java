@@ -26,11 +26,11 @@ public class Console {
     public Scanner getScanner() {
         return scanner;
     }
+    public void printHello(){
+        print("Добро пожаловать!\n" +
+                "Введите help для вывода инструкции");
+    }
 
-      {
-        this.print("Добро пожаловать!");
-        this.print("Введите help для вывода инструкции");
-      }
 
     public String getInput() {
         String input = null;

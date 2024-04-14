@@ -65,10 +65,10 @@ public class DumpManager {
             }
         }
         public static String convertToJson(HashMap<Long, Ticket> hashMap) {
-            Gson gsonBuiler = new GsonBuilder()
+            Gson gsonBuilder = new GsonBuilder()
                     .registerTypeAdapter(Date.class, new DateFormatting())
                     .create();
-            return gsonBuiler.toJson(hashMap);
+            return gsonBuilder.toJson(hashMap);
         }
 
     }
