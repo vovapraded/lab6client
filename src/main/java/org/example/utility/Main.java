@@ -1,11 +1,10 @@
 package org.example.utility;
 
 import java.io.IOException;
-import java.net.PortUnreachableException;
 
-import org.example.commands.Exit;
 import org.example.connection.UdpClient;
 import org.example.managers.*;
+import org.common.utility.*;
 /**
  *Main class
  */
@@ -14,11 +13,19 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         UdpClient udpClient = new UdpClient();
-        Console console = Console.getInstance();
+        CurrentConsole currentConsole = CurrentConsole.getInstance();
         CreatorOfCommands creator = new CreatorOfCommands();
         ParseInput parseInput = new ParseInput();
         while (true) {
-            String s = console.getInput();
+            String s = currentConsole.getInput();
+            if (s.equals("\\")) {
+                try {
+                    currentConsole.print(udpClient.getResponse(true).trim());
+                }catch (NoResponseException e){
+                    currentConsole.print(e.getMessage());
+                }
+                continue;
+            }
             if (!s.isEmpty()) {
                 try {
                     parseInput.parseInput(s);
@@ -33,15 +40,13 @@ public class Main {
                    }
                     try {
                         udpClient.sendCommand(command);
-                        console.print(udpClient.getResponse().trim());
-                    }catch (PortUnreachableException e){
-                        console.print("Сервер недоступен, повторите позже");
+                        currentConsole.print(udpClient.getResponse(false).trim());
                     }catch (NoResponseException e){
-                        console.print(e.getMessage());
+                        currentConsole.print(e.getMessage());
                     }
 
                 } catch (InvalidFormatException e) {
-                    console.print(e.getMessage());
+                    currentConsole.print(e.getMessage());
                 }
             }
 

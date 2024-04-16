@@ -1,5 +1,5 @@
 package org.example.managers;
-import org.example.utility.*;
+import org.common.utility.InvalidFormatException;
 /**
  * a class for parsing strings into arguments
  */

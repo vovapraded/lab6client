@@ -1,7 +1,10 @@
 package org.example.utility;
 
 import lombok.NoArgsConstructor;
-import org.example.commands.ExecuteScript;
+import org.common.commands.*;
+import org.common.utility.*;
+import org.common.utility.Console;
+
 
 import java.io.*;
 import java.util.ArrayList;
@@ -13,12 +16,12 @@ import static lombok.AccessLevel.PRIVATE;
  * a class for reading and writing from the console
  */
 @NoArgsConstructor(access = PRIVATE)
-public class Console {
-    public static Console getInstance() {
+public class CurrentConsole extends Console {
+    public static CurrentConsole getInstance() {
         return INSTANCE;
     }
 
-    private static final Console INSTANCE= new Console();
+    private static final CurrentConsole INSTANCE= new CurrentConsole();
     private  Scanner fileScanner = null;
     private     Scanner defScanner = new Scanner(System.in);
     private  Scanner scanner;
@@ -65,6 +68,8 @@ public class Console {
     private void  goToMenu(){
         throw new InvalidFormatException("Операция отменена");
     }
+    @Override
+
     public String getInputFromCommand(int minCountOfArgs,int maxCountOfArgs){
         this.print("Для отмены операции введите /");
         String input = this.getInput();
@@ -86,6 +91,8 @@ public class Console {
             scanner =fileScanner;
         }
     }
+    @Override
+
     public void selectFileScanner(Scanner scanner) {
         this.fileScanner = scanner;
     }
@@ -97,4 +104,11 @@ public class Console {
         System.out.println(s);
     }
 
+
+    @Override
+    public void addToSend(String s) {
+    }
+@Override
+    public void send() {
+    }
 }

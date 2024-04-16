@@ -1,7 +1,11 @@
 package org.example.managers;
 
-import org.example.commands.*;
-import org.example.utility.*;
+import org.common.commands.*;
+import org.common.utility.*;
+import org.common.managers.Collection;
+import org.example.utility.CurrentConsole;
+import org.common.utility.InvalidFormatException;
+
 
 import java.util.HashMap;
 
@@ -10,7 +14,7 @@ import java.util.HashMap;
  */
 public class CreatorOfCommands {
     private final Collection collection = Collection.getInstance();
-    private final  Console console = Console.getInstance();
+    private final CurrentConsole currentConsole = CurrentConsole.getInstance();
     private  HashMap<String, Command> commands = new HashMap<String, Command>();
 
     public CreatorOfCommands(){
@@ -43,7 +47,8 @@ public class CreatorOfCommands {
                 throw new RuntimeException("Нет такой команды");
             }
             var command=commands.get(cmd);
-            command.prepareToSend(arg1,Commands.valueOf(cmd).isTicketArgIsNeeded());
+            command.setConsole(currentConsole);
+            command.prepareToSend(arg1, Commands.valueOf(cmd).isTicketArgIsNeeded());
             if (cmd.equals("execute_script") || cmd.equals("exit") ){
                 command.execute();
                 return null;
