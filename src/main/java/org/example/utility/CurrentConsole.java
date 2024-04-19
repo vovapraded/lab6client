@@ -7,6 +7,7 @@ import org.common.utility.Console;
 
 
 import java.io.*;
+import java.net.SocketAddress;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -106,9 +107,9 @@ public class CurrentConsole extends Console {
 
 
     @Override
-    public void addToSend(String s) {
+    public void addToSend(String s, SocketAddress address) {
     }
 @Override
-    public void send() {
+    public void send( SocketAddress address) {
     }
 }

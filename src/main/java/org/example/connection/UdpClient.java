@@ -65,17 +65,27 @@ private DatagramChannel client;
 
 
     public void sendCommand(Command command) {
+        boolean isSend = false;
         try {
             // Данные для отправки
             ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
             ObjectOutputStream objectStream = new ObjectOutputStream(byteStream);
             objectStream.writeObject(command);
             objectStream.flush();
-            //отправляем
+            isSend = true;
             sendData(byteStream.toByteArray());
+            //отправляем
         } catch (IOException e) {
-            System.out.println("Сереализация не удалась: "+e.getMessage());
+            if (isSend){
+                System.out.println("Отправка не удалась: "+e.getMessage());
+
+            }else {
+                System.out.println("Сереализация не удалась: "+e.getMessage());
+
+            }
         }
+
+
 
     }
     public void sendData(byte[] data) throws IOException {
@@ -95,13 +105,7 @@ private DatagramChannel client;
         for (byte[] packet : packets) {
             ByteBuffer buffer = ByteBuffer.wrap(packet);
             client.send(buffer, serverSocketAddress);
-            if (packets.length == 1) return;
-            try {
-                Thread.sleep(1000); // Приостановка на 1 секунду (1000 миллисекунд)
-            } catch (InterruptedException e) {
-                // Обработка исключения, если поток прерывается во время ожидания
-                e.printStackTrace();
-            }
+
         }
    }
 
