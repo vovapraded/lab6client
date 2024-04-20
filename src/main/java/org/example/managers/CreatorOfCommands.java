@@ -48,7 +48,10 @@ public class CreatorOfCommands {
             }
             var command=commands.get(cmd);
             command.setConsole(currentConsole);
-            command.prepareToSend(arg1, Commands.valueOf(cmd).isTicketArgIsNeeded());
+            command.validate(arg1);
+            command.prepareToSend(Commands.valueOf(cmd).isTicketArgIsNeeded());
+
+
             if (cmd.equals("execute_script") || cmd.equals("exit") ){
                 command.execute();
                 return null;

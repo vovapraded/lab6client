@@ -105,7 +105,6 @@ private DatagramChannel client;
         for (byte[] packet : packets) {
             ByteBuffer buffer = ByteBuffer.wrap(packet);
             client.send(buffer, serverSocketAddress);
-
         }
    }
 
