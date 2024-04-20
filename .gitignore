@@ -6,3 +6,4 @@ target/
 .idea/
  #Ignore all .iml files
 *.iml
+out/
