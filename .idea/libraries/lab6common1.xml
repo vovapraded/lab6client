@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="lab6common1">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../lab6common/out/artifacts/lab6common/lab6common.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>
